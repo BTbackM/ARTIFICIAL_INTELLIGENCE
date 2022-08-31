@@ -1,11 +1,10 @@
 from glob import glob
 from matplotlib.pyplot import legend, plot, savefig, scatter, title, xlabel, ylabel, xlim, ylim
 from numpy import amin, amax
-from os import path
+from os import listdir, path, remove
 from PIL import Image
 
 # ------------------------ VARIABLES ------------------------
-
 
 # ----- COLORS -----
 blue = '#3264AF'
@@ -29,7 +28,7 @@ def make_gif(FRAMES_PATH, GIF_PATH):
     frames = [Image.open(img) for img in sorted(glob(FRAMES_PATH))]
     
     frame_one = frames[0]
-    frame_one.save(GIF_PATH, format = 'GIF', append_images = frames, save_all = True, duration = 500, loop = 0)
+    frame_one.save(GIF_PATH, format = 'GIF', append_images = frames, save_all = True, duration = 250, loop = 0)
 
 def make_scatter(x, y, COLOR, LABEL, XLABEL, YLABEL, TITLE, PATH):
     scatter(x, y, color = COLOR, marker = 'o', s = 20, label = LABEL)
@@ -50,3 +49,7 @@ def make_plot(x, y, COLOR, LABEL, XLABEL, YLABEL, TITLE, PATH):
     xlim([0, 1])
     ylim([0, 2])
     savefig(PATH, dpi = 250)
+
+def delete_images(directory):
+    for file in listdir(directory):
+        remove(path.join(directory, file))
