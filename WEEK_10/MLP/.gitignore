@@ -1,0 +1,15 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.o
+*.obj
+
+# Executables
+*.out
+
+# CMake files
+CMakeFiles
+Makefile
+CMakeCache.txt
+*.cmake
