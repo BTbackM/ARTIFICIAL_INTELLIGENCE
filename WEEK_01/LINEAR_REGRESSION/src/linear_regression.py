@@ -12,11 +12,13 @@ def loss_function(x, y, w, b):
     n = len(x)
     l = 1 / (2 * n)
 
-    sum = 0
+    S = 0
     for x_i, y_i in zip(x, y):
-        sum += pow(y_i - hypothesis(x_i, w, b), 2)
+        e = (y_i - hypothesis(x_i, w, b))
+        S += pow(e, 2)
+    # S = sum(map(lambda x_i, y_i: (y_i - hypothesis(x_i, w, b)) ** (y_i - hypothesis(x_i, w, b)), x, y))
 
-    l *= sum
+    l *= S
 
     return l
 
@@ -25,14 +27,16 @@ def derivate(x, y, w, b):
     dW = (1 / n)
     dB = (1 / n)
     
-    sum_w, sum_b = 0, 0
+    # S_w = sum(map(lambda x_i, y_i: (y_i - hypothesis(x_i, w, b)) * -x_i, x, y))
+    # S_b = sum(map(lambda x_i, y_i: (y_i - hypothesis(x_i, w, b)) * -1, x, y))
+    S_w, S_b = 0, 0
     for x_i, y_i in zip(x, y):
         tmp = (y_i - hypothesis(x_i, w, b))
-        sum_w += (tmp * -x_i)
-        sum_b += (tmp * -1)
+        S_w += (tmp * -x_i)
+        S_b += (tmp * -1)
 
-    dW *= sum_w
-    dB *= sum_b
+    dW *= S_w
+    dB *= S_b
 
     return dW, dB
 
@@ -46,25 +50,20 @@ def update(w, b, dW, dB, alpha):
 def train(x, y, epochs, alpha, _w, _b):
     seed(2001)
     w = 0
-    b = 0
+    b = 1
     L = loss_function(x, y, w, b)
     loss = []
     frame = 0
     
-    for _ in range(epochs):
-        frame_number = '{:0>4d}'.format(frame)
-        frame += 1
-        # redo_figures(x, y, w, b, _w, _b, path.join(IMG_PATH, f'linear_regression/linear_regression_{frame_number}.jpg'))
-        n = len(x)
-        Y_pred = w*x + b  # The current predicted value of Y
-        D_w = (-2/n) * sum(x * (y - Y_pred))  # Derivative wrt m
-        D_b = (-2/n) * sum(y - Y_pred)  # Derivative wrt c
-        w = w - alpha * D_w  # Update m
-        b = b - alpha * D_b  # Update c
-        # dW, dB = derivate(x, y, w, b)
-        # w, b = update(w, b, dW, dB, alpha)
-        # L = loss_function(x, y, w, b)
-        # loss.append(L)
+    for i in range(epochs):
+        if i % 50 == 0:
+            frame_number = '{:0>4d}'.format(frame)
+            frame += 1
+            redo_figures(x, y, w, b, _w, _b, path.join(IMG_PATH, f'linear_regression/linear_regression_{frame_number}.jpg'))
+        dW, dB = derivate(x, y, w, b)
+        w, b = update(w, b, dW, dB, alpha)
+        L = loss_function(x, y, w, b)
+        loss.append(L)
 
     redo_figures(x, y, w, b, _w, _b, path.join(IMG_PATH, f'linear_regression.jpg'))
 

@@ -20,7 +20,8 @@ make_scatter(x, y, BLUE, 'Data', 'Income', 'Happiness', 'Linear Regression', pat
 model = LinearRegression().fit(x, y)
 w, b = model.coef_, model.intercept_
 
-w, b, loss = train(x, y, 2000, 10 ** -2, w, b)
+w, b, loss = train(x, y, 4000, 10 ** -2, w, b)
+print(len(loss))
 
 make_gif(path.join(IMG_PATH, 'linear_regression/*.jpg'), path.join(IMG_PATH, 'linear_regression.gif'))
 delete_images(path.join(IMG_PATH, 'linear_regression/'))
