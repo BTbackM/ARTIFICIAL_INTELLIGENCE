@@ -1,17 +1,28 @@
+#include <armadillo>
+#include <Eigen/Eigen>
 #include <iostream>
 
-int main(int argc, char *argv[]) {
-  int N;
+using namespace arma;
 
-  if(argc == 1) {
-    N = 2;
+#include "mlp.h"
+
+int main(int argc, char *argv[]) {
+  int N, H, O;
+
+  if(argc == 4) {
+    N = atoi(argv[1]);
+    H = atoi(argv[2]);
+    O = atoi(argv[3]);
   }
   else {
-    N = atoi(argv[1]);
+    N = 3;
+    H = 4;
+    O = 3;
   }
 
-  printf("Hello World \n");
+  MLP mlp = MLP(N, H, O);
+  Mat<double> input({1, 2, 3});
+  mlp.forward(input);
 
   return 0;
 }
-
