@@ -21,18 +21,14 @@ int main(int argc, char *argv[]) {
     O = 3;
   }
 
-  Mat<double> A(2, 1, fill::ones);
-  A.print("A:");
-
-  // Mat<double> B;
-  // B = A % ( 3 * A);
-  // B.print("B:");
-
   shared_ptr<Function> f_ac = make_shared<Sigmoid>();
   
   MLP mlp = MLP(f_ac, N, H, O);
   Mat<double> input({1, 2, 3});
   mlp.forward(input);
+  double alpha = 0.01;
+  Mat<double> output({0.5, 0.5, 0.5});
+  mlp.backward(output, alpha);
 
   return 0;
 }

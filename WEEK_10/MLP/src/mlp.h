@@ -14,12 +14,13 @@ struct MLP {
   shared_ptr<Function> f_ac;
   vector<Mat<double>> weights;
   vector<Mat<double>> outputs;
+  Mat<double> lambda;
 
   MLP(shared_ptr<Function> f_ac, const int N);
   
   MLP(shared_ptr<Function> f_ac, const int N, const int H, const int O);
 
-  void backward(Mat<double> input, const int alpha);
+  void backward(Mat<double> input, const double alpha);
 
   void forward(Mat<double> input);
 
