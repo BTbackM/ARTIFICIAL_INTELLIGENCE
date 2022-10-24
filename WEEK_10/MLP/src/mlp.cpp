@@ -1,3 +1,4 @@
+#include <cassert>
 #include <iostream>
 
 #include "mlp.h"
@@ -79,10 +80,27 @@ void MLP::forward(Mat<double> S_i) {
   }
 }
 
-void MLP::train(Mat<double> train_set, const int epochs) {
-  train_set.print("Train:");
-  for(int i = 0; i < epochs; i++) {
+vector<Mat<double>> MLP::predict(vector<Mat<double>> input) {
+  int s = input.size();
 
+  vector<Mat<double>> output;
+  for(int i = 0; s < N; i++) {
+    forward(input[i]);
+    output.push_back(this->outputs[this->N]);
+  }
+
+  return output;
+}
+
+void MLP::train(vector<Mat<double>> input, vector<Mat<double>> output, const int epochs, const int alpha) {
+  assert(input.size() == output.size());
+
+  int s = input.size();
+  for(int e = 0; e < epochs; e++) {
+    for(int i = 0; i < s; i++) {
+      forward(input[i]);
+      backward(output[i], alpha);
+    }
   }
 }
 
